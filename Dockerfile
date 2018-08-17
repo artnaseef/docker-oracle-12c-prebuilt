@@ -8,8 +8,8 @@ ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/u01/app/o
 ENV USE_UTF8_IF_CHARSET_EMPTY true
 
 ADD entrypoint.sh /entrypoint.sh
-
-RUN apt-get update && apt-get -y install curl && apt-get clean && rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* 
+ADD exec-db-scripts.sh /exec-db-scripts.sh
+ADD initialize-db.sh /initialize-db.sh
 
 EXPOSE 1521
 EXPOSE 8080
@@ -17,3 +17,5 @@ VOLUME ["/docker-entrypoint-initdb.d"]
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD [""]
+
+RUN apt-get update && apt-get -y install curl && apt-get clean && rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*  && /initialize-db.sh
